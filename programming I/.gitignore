@@ -1,0 +1,7 @@
+# Compiled source #
+###################
+*.exe
+
+# Visual Studio Code #
+###################
+.vscode/*
