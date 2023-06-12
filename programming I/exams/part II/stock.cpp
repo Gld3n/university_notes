@@ -67,7 +67,9 @@ void modifyProduct() {
         cout << "No products to modify\n";
         return;
     }
-    cout << "Select the product to modify by index:\n";
+    cout 
+        << "Select the product to modify by index:\n"
+        << "Index: ";
     cin >> index;
     cin.ignore();
 
@@ -85,7 +87,8 @@ void modifyProduct() {
             << "1. Name\n"
             << "2. Price\n"
             << "3. Discount\n"
-            << "4. Quantity\n";
+            << "4. Quantity\n"
+            << "Option: ";
         cin >> opt;
         cin.ignore();
 
@@ -208,7 +211,8 @@ void settings() {
     cout 
         << "What do you want to modify?\n"
         << "1. IVA\n"
-        << "2. Dollar price\n";
+        << "2. Dollar price\n"
+        << "Option: ";
     cin >> opt;
     cin.ignore();
 
