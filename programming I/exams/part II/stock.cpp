@@ -1,0 +1,259 @@
+// For activity reference, see the README file in this directory.
+
+#include <iostream>
+
+using namespace std;
+
+string productsNames[10];
+double productsPrices[10],
+productsGrossTotals,
+productsNetTotals;
+int productsDiscounts[10],
+productsQuantities[10],
+productsCount;
+
+//! Default Settings
+int IVA = 0.16; // 16%
+double dollarPrice = 26.85; // Bs. (BCV 06/11/2023)
+
+
+void addProduct() {
+    string name; double price;
+    int discount, quantity;
+
+    cout << "---Add product-------------\n";
+    cout << "Fill the following fields:\n";
+
+    cout << "Name: ";
+    getline(cin, name);
+
+    cout << "Price (USD): ";
+    cin >> price;
+
+    cout << "Discount (from 0 to 99): ";
+    cin >> discount;
+    while (discount < 0 || discount > 99) {
+        cout << "Invalid discount, try again: ";
+        cin >> discount;
+        cin.clear();
+        cin.ignore();
+    }
+
+    cout << "Quantity: ";
+    cin >> quantity;
+    while (quantity < 0) {
+        cout << "Invalid quantity, try again: ";
+        cin >> quantity;
+        cin.clear();
+        cin.ignore();
+    }
+
+    productsNames[productsCount] = name;
+    productsPrices[productsCount] = price;
+    productsDiscounts[productsCount] = discount;
+    productsQuantities[productsCount] = quantity;
+    productsGrossTotals += price * quantity;
+    productsNetTotals += ((price - (price * discount / 100)) * quantity) + (price * IVA * quantity);
+
+    productsCount++;
+}
+
+
+void modifyProduct() {
+    int index, opt;
+    
+    cout << "---Modify product----------\n";
+    cout << "Select the product to modify by index:\n";
+    cin >> index;
+    cin.ignore();
+
+    if (index < 0 || index >= productsCount) {
+        cout << "Product not found\n";
+        return;
+    } else {
+        cout 
+            << "Product found: "
+            << productsNames[index]
+            << endl;
+        
+        cout 
+            << "What do you want to modify?\n"
+            << "1. Name\n"
+            << "2. Price\n"
+            << "3. Discount\n"
+            << "4. Quantity\n";
+        cin >> opt;
+        cin.ignore();
+
+        switch (opt) {
+            case 1:
+                cout << "New name: ";
+                getline(cin, productsNames[index]);
+                break;
+            case 2:
+                cout << "New price: ";
+                cin >> productsPrices[index];
+                break;
+            case 3:
+                cout << "New discount: ";
+                cin >> productsDiscounts[index];
+                while (productsDiscounts[index] < 0 || productsDiscounts[index] > 99) {
+                    cout << "Invalid discount, try again: ";
+                    cin >> productsDiscounts[index];
+                    cin.clear();
+                    cin.ignore();
+                }
+                break;
+            case 4:
+                cout << "New quantity: ";
+                cin >> productsQuantities[index];
+                while (productsQuantities[index] < 0) {
+                    cout << "Invalid quantity, try again: ";
+                    cin >> productsQuantities[index];
+                    cin.clear();
+                    cin.ignore();
+                }
+                break;
+            default:
+                cout << "Invalid option\n";
+                break;
+        }
+    }
+}
+
+
+void listProducts() {
+    cout << "---Products----------------\n";
+    for (int i = 0; i < productsCount; i++) {
+        cout
+            << "[Index: " << i << "]\n"
+            << "Name: " << productsNames[i] << endl
+            << "Price: " << productsPrices[i] << "$ (Bs."
+            << (productsPrices[i] * dollarPrice) << ")" << endl
+            << "Discount: " << productsDiscounts[i] << "%" << endl
+            << "Quantity: " << productsQuantities[i] << " units in stock" << endl
+            << endl;
+    }
+}
+
+
+void statistics() {
+    int cheapest, mostExpensive, largerQuantity, 
+    smallerQuantity, discountedProducts = 0;
+
+    for (int i = 0; i < productsCount; i++) {
+        if (productsPrices[i] < productsPrices[cheapest]) {
+            cheapest = i;
+        }
+    }
+    for (int i = 0; i < productsCount; i++) {
+        if (productsPrices[i] > productsPrices[mostExpensive]) {
+            mostExpensive = i;
+        }
+    }
+    for (int i = 0; i < productsCount; i++) {
+        if (productsQuantities[i] > productsQuantities[largerQuantity]) {
+            largerQuantity = i;
+        }
+    }
+    for (int i = 0; i < productsCount; i++) {
+        if (productsQuantities[i] < productsQuantities[smallerQuantity]) {
+            smallerQuantity = i;
+        }
+    }
+    for (int i = 0; i < productsCount; i++) {
+        if (productsDiscounts[i] > 0) {
+            discountedProducts++;
+        }
+    }
+
+    cout << "---Statistics--------------\n";
+    cout 
+        << "Total products: " << productsCount << endl
+        << "Gross total: " << productsGrossTotals << "$" << endl
+        << "Net total: " << productsNetTotals << "$" << endl
+        << "Cheapest product: " << productsNames[cheapest] 
+            << " [" << productsPrices[cheapest] << "$ - Bs."
+            << (productsPrices[cheapest] * dollarPrice) << "]" << endl
+        << "Most expensive product: " << productsNames[mostExpensive] 
+            << " [" << productsPrices[mostExpensive] << "$ - Bs."
+            << (productsPrices[mostExpensive] * dollarPrice) << "]" << endl
+        << "Product with larger quantity: " << productsNames[largerQuantity]
+        << " [" << productsQuantities[largerQuantity] << "u]" << endl
+        << "Product with smaller quantity: " << productsNames[smallerQuantity]
+        << " [" << productsQuantities[smallerQuantity] << "u]" << endl
+        << "Products with discount: " << discountedProducts << endl;
+}
+
+
+void settings() {
+    int opt;
+
+    cout << "---Settings----------------\n";
+    cout 
+        << "What do you want to modify?\n"
+        << "1. IVA\n"
+        << "2. Dollar price\n";
+    cin >> opt;
+    cin.ignore();
+
+    switch (opt) {
+        case 1:
+            cout << "New IVA: ";
+            cin >> IVA;
+            break;
+        case 2:
+            cout << "New dollar price: ";
+            cin >> dollarPrice;
+            break;
+        default:
+            cout << "Invalid option\n";
+            break;
+    }
+}
+
+
+int main() {
+    int opt, flag = 1;
+    
+    cout << "*---Welcome to the store---*\n";
+    do {
+        cout
+            << "---Menu--------------------\n"
+            << "1. Add products\n"
+            << "2. Modify products\n"
+            << "3. List products\n"
+            << "4. Statistics\n"
+            << "5. Settings\n"
+            << "6. Exit\n";
+        cin >> opt;
+        cin.clear();
+        cin.ignore(10000, '\n');
+
+        switch (opt) {
+            case 1:
+                addProduct();
+                break;
+            case 2:
+                modifyProduct();
+                break;
+            case 3:
+                listProducts();
+                break;
+            case 4:
+                statistics();
+                break;
+            case 5:
+                settings();
+                break;
+            case 6:
+                cout << "Ba-bye\n";
+                flag = 0;
+                break;
+            default:
+                cout << "Invalid option\n";
+                break;
+        }
+
+    } while (flag == 1);
+}
