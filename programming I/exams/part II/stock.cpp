@@ -13,8 +13,8 @@ productsQuantities[10],
 productsCount;
 
 //! Default Settings
-int IVA = 0.16; // 16%
-double dollarPrice = 26.85; // Bs. (BCV 06/11/2023)
+double IVA = 0.16, // 16%
+dollarPrice = 26.85; // Bs. (BCV 06/11/2023)
 
 
 void addProduct() {
@@ -53,7 +53,7 @@ void addProduct() {
     productsDiscounts[productsCount] = discount;
     productsQuantities[productsCount] = quantity;
     productsGrossTotals += price * quantity;
-    productsNetTotals += ((price - (price * discount / 100)) * quantity) + (price * IVA * quantity);
+    productsNetTotals += productsGrossTotals - (productsGrossTotals * (discount / 100.0)) + (productsGrossTotals * IVA);
 
     productsCount++;
 }
@@ -63,6 +63,10 @@ void modifyProduct() {
     int index, opt;
     
     cout << "---Modify product----------\n";
+    if (productsCount == 0) {
+        cout << "No products to modify\n";
+        return;
+    }
     cout << "Select the product to modify by index:\n";
     cin >> index;
     cin.ignore();
@@ -124,14 +128,23 @@ void modifyProduct() {
 
 void listProducts() {
     cout << "---Products----------------\n";
+    if (productsCount == 0) {
+        cout << "No products in stock\n";
+        return;
+    }
     for (int i = 0; i < productsCount; i++) {
+        double gross = productsPrices[i] * productsQuantities[i],
+        net = gross - (gross * (productsDiscounts[i] / 100.0)) + (gross * IVA);
+
         cout
             << "[Index: " << i << "]\n"
             << "Name: " << productsNames[i] << endl
             << "Price: " << productsPrices[i] << "$ (Bs."
             << (productsPrices[i] * dollarPrice) << ")" << endl
             << "Discount: " << productsDiscounts[i] << "%" << endl
-            << "Quantity: " << productsQuantities[i] << " units in stock" << endl
+            << "Quantity: " << productsQuantities[i] << " unit(s) in stock" << endl
+            << "Gross total: " << (gross) << "$ (Bs." << (gross * dollarPrice) << ")" << endl
+            << "Net total: " << (net) << "$ (Bs." << (net) * dollarPrice << ")" << endl
             << endl;
     }
 }
@@ -170,19 +183,21 @@ void statistics() {
     cout << "---Statistics--------------\n";
     cout 
         << "Total products: " << productsCount << endl
-        << "Gross total: " << productsGrossTotals << "$" << endl
-        << "Net total: " << productsNetTotals << "$" << endl
+        << "Gross total in stock: " << productsGrossTotals << "$" << endl
+        << "Net total in stock: " << productsNetTotals << "$" << endl
         << "Cheapest product: " << productsNames[cheapest] 
             << " [" << productsPrices[cheapest] << "$ - Bs."
             << (productsPrices[cheapest] * dollarPrice) << "]" << endl
         << "Most expensive product: " << productsNames[mostExpensive] 
             << " [" << productsPrices[mostExpensive] << "$ - Bs."
             << (productsPrices[mostExpensive] * dollarPrice) << "]" << endl
-        << "Product with larger quantity: " << productsNames[largerQuantity]
+        << "Product with larger stock: " << productsNames[largerQuantity]
         << " [" << productsQuantities[largerQuantity] << "u]" << endl
-        << "Product with smaller quantity: " << productsNames[smallerQuantity]
+        << "Product with smaller stock: " << productsNames[smallerQuantity]
         << " [" << productsQuantities[smallerQuantity] << "u]" << endl
-        << "Products with discount: " << discountedProducts << endl;
+        << "Products with discount: " << discountedProducts << endl
+        << "IVA: " << (IVA * 100) << "%\n"
+        << "Exchange rate (BCV): Bs." << dollarPrice << endl;
 }
 
 
@@ -199,7 +214,7 @@ void settings() {
 
     switch (opt) {
         case 1:
-            cout << "New IVA: ";
+            cout << "New IVA (as decimal): ";
             cin >> IVA;
             break;
         case 2:
@@ -225,7 +240,8 @@ int main() {
             << "3. List products\n"
             << "4. Statistics\n"
             << "5. Settings\n"
-            << "6. Exit\n";
+            << "6. Exit\n"
+            << "Option: ";
         cin >> opt;
         cin.clear();
         cin.ignore(10000, '\n');
