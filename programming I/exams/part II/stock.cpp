@@ -17,6 +17,13 @@ double IVA = 0.16, // 16%
 dollarPrice = 26.85; // Bs. (BCV 06/11/2023)
 
 
+void wait() {
+    cout << "\nPress enter to continue...";
+    cin.ignore();
+    system("cls");
+}
+
+
 void addProduct() {
     string name; double price;
     int discount, quantity;
@@ -56,6 +63,7 @@ void addProduct() {
     productsNetTotals += productsGrossTotals - (productsGrossTotals * (discount / 100.0)) + (productsGrossTotals * IVA);
 
     productsCount++;
+    cin.ignore(10000, '\n');
 }
 
 
@@ -214,7 +222,6 @@ void settings() {
         << "2. Dollar price\n"
         << "Option: ";
     cin >> opt;
-    cin.ignore();
 
     switch (opt) {
         case 1:
@@ -229,6 +236,7 @@ void settings() {
             cout << "Invalid option\n";
             break;
     }
+    cin.ignore(10000, '\n');
 }
 
 
@@ -253,25 +261,31 @@ int main() {
         switch (opt) {
             case 1:
                 addProduct();
+                wait();
                 break;
             case 2:
                 modifyProduct();
+                wait();
                 break;
             case 3:
                 listProducts();
+                wait();
                 break;
             case 4:
                 statistics();
+                wait();
                 break;
             case 5:
                 settings();
+                wait();
                 break;
             case 6:
-                cout << "Ba-bye\n";
+                cout << "Ba-bye!\n";
                 flag = 0;
                 break;
             default:
                 cout << "Invalid option\n";
+                wait();
                 break;
         }
 
