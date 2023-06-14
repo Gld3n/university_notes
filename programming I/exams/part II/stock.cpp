@@ -1,5 +1,8 @@
 // For activity reference, see the README file in this directory.
 
+// TODO: Check why the modifyProduct() func is not working properly.
+// name modification erases the name of the product.
+
 #include <iostream>
 
 using namespace std;
@@ -75,6 +78,7 @@ void modifyProduct() {
         cout << "No products to modify\n";
         return;
     }
+
     cout 
         << "Select the product to modify by index:\n"
         << "Index: ";
@@ -84,56 +88,56 @@ void modifyProduct() {
     if (index < 0 || index >= productsCount) {
         cout << "Product not found\n";
         return;
-    } else {
-        cout 
-            << "Product found: "
-            << productsNames[index]
-            << endl;
-        
-        cout 
-            << "What do you want to modify?\n"
-            << "1. Name\n"
-            << "2. Price\n"
-            << "3. Discount\n"
-            << "4. Quantity\n"
-            << "Option: ";
-        cin >> opt;
-        cin.ignore();
-
-        switch (opt) {
-            case 1:
-                cout << "New name: ";
-                getline(cin, productsNames[index]);
-                break;
-            case 2:
-                cout << "New price: ";
-                cin >> productsPrices[index];
-                break;
-            case 3:
-                cout << "New discount: ";
-                cin >> productsDiscounts[index];
-                while (productsDiscounts[index] < 0 || productsDiscounts[index] > 99) {
-                    cout << "Invalid discount, try again: ";
-                    cin >> productsDiscounts[index];
-                    cin.clear();
-                    cin.ignore();
-                }
-                break;
-            case 4:
-                cout << "New quantity: ";
-                cin >> productsQuantities[index];
-                while (productsQuantities[index] < 0) {
-                    cout << "Invalid quantity, try again: ";
-                    cin >> productsQuantities[index];
-                    cin.clear();
-                    cin.ignore();
-                }
-                break;
-            default:
-                cout << "Invalid option\n";
-                break;
-        }
     }
+    
+    cout 
+        << "Product found: "
+        << productsNames[index]
+        << endl;
+    
+    cout 
+        << "What do you want to modify?\n"
+        << "1. Name\n"
+        << "2. Price\n"
+        << "3. Discount\n"
+        << "4. Quantity\n"
+        << "Option: ";
+    cin >> opt;
+
+    switch (opt) {
+        case 1:
+            cout << "New name: ";
+            getline(cin, productsNames[index]);
+            break;
+        case 2:
+            cout << "New price: ";
+            cin >> productsPrices[index];
+            break;
+        case 3:
+            cout << "New discount: ";
+            cin >> productsDiscounts[index];
+            while (productsDiscounts[index] < 0 || productsDiscounts[index] > 99) {
+                cout << "Invalid discount, try again: ";
+                cin >> productsDiscounts[index];
+                cin.clear();
+                cin.ignore();
+            }
+            break;
+        case 4:
+            cout << "New quantity: ";
+            cin >> productsQuantities[index];
+            while (productsQuantities[index] < 0) {
+                cout << "Invalid quantity, try again: ";
+                cin >> productsQuantities[index];
+                cin.clear();
+                cin.ignore();
+            }
+            break;
+        default:
+            cout << "Invalid option\n";
+            break;
+    }
+    cin.ignore(10000, '\n');
 }
 
 
