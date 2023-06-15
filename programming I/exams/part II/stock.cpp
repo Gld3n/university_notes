@@ -166,8 +166,8 @@ void listProducts() {
 
 
 void statistics() {
-    int cheapest, mostExpensive, largerQuantity, 
-    smallerQuantity, discountedProducts = 0;
+    int cheapest = 0, mostExpensive = 0, largerQuantity = 0, 
+    smallerQuantity = 0, discountedProducts = 0;
 
     for (int i = 0; i < productsCount; i++) {
         if (productsPrices[i] < productsPrices[cheapest]) {

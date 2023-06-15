@@ -4,4 +4,8 @@
 
 # Visual Studio Code #
 ###################
-.vscode/*
+.vscode/
+
+# Manual Files #
+###################
+stock
