@@ -1,7 +1,6 @@
 // For activity reference, see the README file in this directory.
 
-// TODO: Check why the modifyProduct() func is not working properly.
-// name modification erases the name of the product.
+// TODO solved. getline() was taking previous buffer characters.
 
 #include <iostream>
 
