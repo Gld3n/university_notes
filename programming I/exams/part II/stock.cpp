@@ -23,7 +23,11 @@ dollarPrice = 26.85; // Bs. (BCV 06/11/2023)
 void wait() {
     cout << "\nPress enter to continue...";
     cin.ignore();
-    system("cls");
+    #ifdef _WIN32
+        system("cls");
+    #elif __linux__
+        system("clear");    
+    #endif
 }
 
 
@@ -103,6 +107,7 @@ void modifyProduct() {
         << "4. Quantity\n"
         << "Option: ";
     cin >> opt;
+    cin.ignore();
 
     switch (opt) {
         case 1:
