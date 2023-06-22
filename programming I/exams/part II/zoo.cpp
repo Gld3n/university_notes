@@ -52,7 +52,6 @@ void selectSpc(int index) {
     
     cout << "You selected: " << registeredSpcs[opt - 1] << endl;
     species[index] = registeredSpcs[opt - 1];
-    wait();
 }
 
 //* Main functions
@@ -63,6 +62,7 @@ void addAnimal() {
 
     cout << "=== Add Animal ======================\n";
     selectSpc(anmlCount);
+    wait();
 
     cout 
         << "=== Add Animal ======================\n"
@@ -134,7 +134,7 @@ void modifyAnimal() {
 
     cout << "Select animal to modify: " << endl;
     for (int i = 0; i < anmlCount; i++) {
-        cout << "Index [" << i << "] " << names[i] << " - Species:" << species[i] << endl;
+        cout << "Index[" << i << "] " << "(Name: " << names[i] << " - Species: " << species[i] << ")" << endl;
     }
     cout << "Option: ";
     cin >> index;
@@ -145,7 +145,7 @@ void modifyAnimal() {
     }
     clearIn();
 
-    cout << "You selected: " << names[index] << " - Species: " << species[index] << endl;
+    cout << "You selected: (" << names[index] << " - " << species[index] << ")" << endl;
     wait();
 
     cout << "=== Modify Animal ===================\n";
@@ -160,7 +160,7 @@ void modifyAnimal() {
         << "7. Exit\n"
         << "Option: ";
     cin >> opt;
-    while (opt < 1 || opt > 5 || cin.fail()) {
+    while (opt < 1 || opt > 7 || cin.fail()) {
         clearIn();
         cout << "Invalid option, try again: ";
         cin >> opt;
@@ -233,7 +233,7 @@ void listAnimals() {
     }
 
     for (int i = 0; i < anmlCount; i++) {
-        cout << "Index: " << i << ". " << names[i] << " - " << species[i] << endl;
+        cout << "Index[" << i << "] " << "(Name: " << names[i] << " - Species: " << species[i] << ")" << endl;
     }
 }
 
@@ -285,7 +285,7 @@ void mainMenu() {
             wait();
             break;
         case 2:
-            modifyAnimal();
+            modifyAnimal(); //! DONE
             wait();
             break;
         case 3:
