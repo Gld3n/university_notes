@@ -17,13 +17,15 @@
 
 > [Hint: use a switch]
 
-1. ### **Add animals**  
+1. ### **Add animals** (Done)
 
 2. ### **Modify animals**  
 
 3. ### **List animals (_species - name_)**  
 
-4. ### **Details**  
+4. ### **Details (_Submenu_)**  
+
+    > Must select a species first
 
     * Show all the animals of a species  
     * Show the weight of each animal in the species  
@@ -32,15 +34,17 @@
     * Show the sex of each animal in the species
     * Show the quantity of each animal in the species
 
-5. ### **Add species**  
+5. ### **Add species** (Done)
 
-6. ### **Zoo (_show a matrix of the desired data_)**  
+6. ### **Zoo (_Submenu_)**  
 
-    * Animal by species (_display menu with all the species_)
+    > Show a matrix of the desired data
+
+    * Animal by species (_display submenu with all the species_)
     * Animal by sex (M or F)
     * Animal by weight (_heaviest to lightest_)
     * Animal by weight (_lightest to heaviest_)
     * Animal by height (_tallest to shortest_)
     * Animal by height (_shortest to tallest_)
 
-7. ### **Exit.**
+7. ### **Exit.** (Done)
