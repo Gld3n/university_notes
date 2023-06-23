@@ -17,7 +17,7 @@
 
 > [Hint: use a switch]
 
-1. ### **Add animals** (Done)
+1. ### **Add animals**
 
 2. ### **Modify animals**  
 
@@ -33,7 +33,7 @@
     * Show the sex of each animal in the species
     * Show the quantity of each animal in the species
 
-5. ### **Add species** (Done)
+5. ### **Add species**
 
 6. ### **Zoo (_Submenu_)**  
 
@@ -46,4 +46,4 @@
     * Animal by height (_tallest to shortest_)
     * Animal by height (_shortest to tallest_)
 
-7. ### **Exit.** (Done)
+7. ### **Exit.**

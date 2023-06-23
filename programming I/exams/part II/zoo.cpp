@@ -3,9 +3,9 @@
 
 using namespace std;
 
-string registeredSpcs[10], species[10], names[10], sexes[10];
-double heights[10], weights[10];
-int quantities[10], anmlCount = 0, spcsCount = 5;
+string registeredSpcs[20], species[20], names[20], sexes[20];
+double heights[20], weights[20];
+int quantities[20], anmlCount = 0, spcsCount = 5;
 
 //* Utility functions
 void wait() {
@@ -350,12 +350,166 @@ void addSpecies() {
     clearIn();
 }
 
-void zooReport() {
+void zooMatrix() {
+    int opt;
+
+    if (anmlCount < 1) {
+        cout << "[There are no animals to detail.]\n";
+        return;
+    }
+
     cout
         << "=== Zoo Report ======================\n"
-        << "Species: " << spcsCount << endl
-        << "Animals: " << anmlCount << endl
-        << "===================================\n";
+        << "Select the desired data: \n"
+        << "1. Animals by species.\n"
+        << "2. Animals by sex.\n"
+        << "3. Animals by weight (heaviest to lightest).\n"
+        << "4. Animals by weight (lightest to heaviest).\n"
+        << "5. Animals by height (tallest to shortest).\n"
+        << "6. Animals by height (shortest to tallest).\n"
+        << "7. Exit\n"
+        << "Option: ";
+    cin >> opt;
+    clearIn();
+    wait();
+
+    switch(opt) {
+        case 1:
+            cout << "=== Zoo Report ======================\n";
+
+            int nAnmls = 0;
+            
+            for (int row = 0; row < spcsCount; row++) {
+                cout << registeredSpcs[row] << ": ";
+                for (string spcs : registeredSpcs) {
+                    for (int i = 0; i < anmlCount; i++) {
+                        if (spcs == species[i]) {
+                            nAnmls++;
+                        }
+                    }
+                }
+                for (int column = 0; column < anmlCount; column++) {
+                    if (registeredSpcs[row] == species[column]) {
+                        cout << "[" << row << "]" << "[" << column << "]" << "(" << names[column] << ")" << "\t";
+                    }
+                }
+                cout << endl;
+            }
+            break;
+        case 2:
+            cout << "=== Zoo Report ======================\n";
+
+            int nAnmls = 0;
+            
+            for (int row = 0; row < spcsCount; row++) {
+                cout << registeredSpcs[row] << ": ";
+                for (string spcs : registeredSpcs) {
+                    for (int i = 0; i < anmlCount; i++) {
+                        if (spcs == species[i]) {
+                            nAnmls++;
+                        }
+                    }
+                }
+                for (int column = 0; column < anmlCount; column++) {
+                    if (registeredSpcs[row] == species[column]) {
+                        cout << "[" << row << "]" << "[" << column << "]" << "(" << names[column] << ")" << "\t";
+                    }
+                }
+                cout << endl;
+            }
+            break;
+        case 3:
+            cout << "=== Zoo Report ======================\n";
+
+            int nAnmls = 0;
+            
+            for (int row = 0; row < spcsCount; row++) {
+                cout << registeredSpcs[row] << ": ";
+                for (string spcs : registeredSpcs) {
+                    for (int i = 0; i < anmlCount; i++) {
+                        if (spcs == species[i]) {
+                            nAnmls++;
+                        }
+                    }
+                }
+                for (int column = 0; column < anmlCount; column++) {
+                    if (registeredSpcs[row] == species[column]) {
+                        cout << "[" << row << "]" << "[" << column << "]" << "(" << names[column] << ")" << "\t";
+                    }
+                }
+                cout << endl;
+            }
+            break;
+        case 4:
+            cout << "=== Zoo Report ======================\n";
+
+            int nAnmls = 0;
+            
+            for (int row = 0; row < spcsCount; row++) {
+                cout << registeredSpcs[row] << ": ";
+                for (string spcs : registeredSpcs) {
+                    for (int i = 0; i < anmlCount; i++) {
+                        if (spcs == species[i]) {
+                            nAnmls++;
+                        }
+                    }
+                }
+                for (int column = 0; column < anmlCount; column++) {
+                    if (registeredSpcs[row] == species[column]) {
+                        cout << "[" << row << "]" << "[" << column << "]" << "(" << names[column] << ")" << "\t";
+                    }
+                }
+                cout << endl;
+            }
+            break;
+        case 5:
+            cout << "=== Zoo Report ======================\n";
+
+            int nAnmls = 0;
+            
+            for (int row = 0; row < spcsCount; row++) {
+                cout << registeredSpcs[row] << ": ";
+                for (string spcs : registeredSpcs) {
+                    for (int i = 0; i < anmlCount; i++) {
+                        if (spcs == species[i]) {
+                            nAnmls++;
+                        }
+                    }
+                }
+                for (int column = 0; column < anmlCount; column++) {
+                    if (registeredSpcs[row] == species[column]) {
+                        cout << "[" << row << "]" << "[" << column << "]" << "(" << names[column] << ")" << "\t";
+                    }
+                }
+                cout << endl;
+            }
+            break;
+        case 6:
+            cout << "=== Zoo Report ======================\n";
+
+            int nAnmls = 0;
+            
+            for (int row = 0; row < spcsCount; row++) {
+                cout << registeredSpcs[row] << ": ";
+                for (string spcs : registeredSpcs) {
+                    for (int i = 0; i < anmlCount; i++) {
+                        if (spcs == species[i]) {
+                            nAnmls++;
+                        }
+                    }
+                }
+                for (int column = 0; column < anmlCount; column++) {
+                    if (registeredSpcs[row] == species[column]) {
+                        cout << "[" << row << "]" << "[" << column << "]" << "(" << names[column] << ")" << "\t";
+                    }
+                }
+                cout << endl;
+            }
+            break;
+        case 7:
+            cout << "[Exiting...]\n";
+            break;
+    }
 }
 
 void mainMenu() {
@@ -398,7 +552,7 @@ void mainMenu() {
             wait();
             break;
         case 6:
-            zooReport();
+            zooMatrix();
             wait();
             break;
         case 7:
