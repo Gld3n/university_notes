@@ -21,7 +21,7 @@
 
 2. ### **Modify animals**  
 
-3. ### **List animals (_species - name_)**  
+3. ### **List animals (_name - species_)**  
 
 4. ### **Details (_Submenu_)**  
 
@@ -29,8 +29,7 @@
 
     * Show all the animals of a species  
     * Show the weight of each animal in the species  
-    * Show the height of each animal in the speices  
-    * Show the sex of each animal in the species  
+    * Show the height of each animal in the species  
     * Show the sex of each animal in the species
     * Show the quantity of each animal in the species
 

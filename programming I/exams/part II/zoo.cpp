@@ -1,14 +1,15 @@
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
 
 string registeredSpcs[10], species[10], names[10], sexes[10];
 double heights[10], weights[10];
-int quantities[10], anmlCount = 0, spcCount = 5;
+int quantities[10], anmlCount = 0, spcsCount = 5;
 
 //* Utility functions
 void wait() {
-    cout << "\nPress enter to continue...";
+    cout << "\n[Press enter to continue...]";
     cin.ignore();
     #ifdef _WIN32
         system("cls");
@@ -34,16 +35,16 @@ bool isString(const string& input) {
     return true;
 }
 
-void selectSpc(int index) {
+string selectSpcs(int index, bool flag) {
     int opt;
     
     cout << "Select species: " << endl;
-    for (int i = 0; i < spcCount; i++) {
+    for (int i = 0; i < spcsCount; i++) {
         cout << i + 1 << ". " << registeredSpcs[i] << endl;
     }
     cout << "Option: ";
     cin >> opt;
-    while (opt < 1 || opt > spcCount || cin.fail()) {
+    while (opt < 1 || opt > spcsCount || cin.fail()) {
         clearIn();
         cout << "Invalid option, try again: ";
         cin >> opt;
@@ -51,7 +52,12 @@ void selectSpc(int index) {
     clearIn();
     
     cout << "You selected: " << registeredSpcs[opt - 1] << endl;
-    species[index] = registeredSpcs[opt - 1];
+    if (flag) {
+        species[index] = registeredSpcs[opt - 1];
+        return "";
+    } else {
+        return registeredSpcs[opt - 1];
+    }
 }
 
 //* Main functions
@@ -61,7 +67,7 @@ void addAnimal() {
     int quantity;
 
     cout << "=== Add Animal ======================\n";
-    selectSpc(anmlCount);
+    selectSpcs(anmlCount, true);
     wait();
 
     cout 
@@ -118,7 +124,7 @@ void addAnimal() {
     clearIn();
     quantities[anmlCount] = quantity;
 
-    cout << "Animal added successfully!" << endl;
+    cout << "[Animal added successfully!]" << endl;
     anmlCount++;
 }
 
@@ -128,7 +134,7 @@ void modifyAnimal() {
     cout << "=== Modify Animal ===================\n";
 
     if (anmlCount < 1) {
-        cout << "There are no animals to modify.\n";
+        cout << "[There are no animals to modify.]\n";
         return;
     }
 
@@ -199,7 +205,7 @@ void modifyAnimal() {
         clearIn();
         break;
     case 4:
-        cout << "No transgender animals allowed, sorry.\n";
+        cout << "[No transgender animals allowed, sorry.]\n";
         break;
     case 5:
         cout << "Enter new quantity: ";
@@ -212,13 +218,13 @@ void modifyAnimal() {
         clearIn();
         break;
     case 6:
-        selectSpc(index);
+        selectSpcs(index, true);
         break;
     case 7:
-        cout << "Exiting...\n";
+        cout << "[Exiting...]\n";
         break;
     default:
-        cout << "Invalid option." << endl;
+        cout << "[Invalid option.]" << endl;
         wait();
         break;
     }
@@ -228,7 +234,7 @@ void listAnimals() {
     cout << "=== List Animals ====================\n";
 
     if (anmlCount < 1) {
-        cout << "There are no animals to list.\n";
+        cout << "[There are no animals to list.]\n";
         return;
     }
 
@@ -238,17 +244,108 @@ void listAnimals() {
 }
 
 void zooDetails() {
+    int opt;
+
     cout << "=== Zoo Details =====================\n";
+    
+    if (anmlCount < 1) {
+        cout << "[There are no animals to detail.]\n";
+        return;
+    }
+    
+    string slct = selectSpcs(0, false);
+    int count = 0;
+    for (int i = 0; i < anmlCount; i++) {
+        if (slct != species[i]) {
+            count++;
+        }
+    }
+    if (count == anmlCount) {
+        cout << "[The species have no info related to it.]" << endl;
+        return;
+    }
+    wait();
+
+    cout
+        << "=== Zoo Details =====================\n"
+        << "Select the data to detail [" << slct << "]: \n"
+        << "1. All the animals in the species.\n"
+        << "2. The weight of each animal of the species.\n"
+        << "3. The height of each animal of the species.\n"
+        << "4. The sex of each animal of the species.\n"
+        << "5. The quantity of each animal of the species.\n"
+        << "6. Exit\n"
+        << "Option: ";
+    cin >> opt;
+    while (opt < 1 || opt > 6 || cin.fail()) {
+        clearIn();
+        cout << "Invalid option, try again: ";
+        cin >> opt;
+    }
+    clearIn();
+    #ifdef _WIN32
+        system("cls");
+    #elif __linux__
+        system("clear");
+    #endif
+
+    cout << "=== Zoo Details =====================\n";
+    switch (opt) {
+    case 1:
+        for (int i = 0; i < anmlCount; i++) {
+            if (slct == species[i]) {
+                cout << "Index[" << i << "] " << "(Name: " << names[i] << " - Species: " << species[i] << ")" << endl;
+            }
+        }
+        break;
+    case 2:
+        for (int i = 0; i < anmlCount; i++) {
+            if (slct == species[i]) {
+                cout << "Index[" << i << "] " << "(Name: " << names[i] << " - Weight: " << weights[i] << "Kg)" << endl;
+            }
+        }
+        break;
+    case 3:
+        for (int i = 0; i < anmlCount; i++) {
+            if (slct == species[i]) {
+                cout << "Index[" << i << "] " << "(Name: " << names[i] << " - Height: " << heights[i] << "m)" << endl;
+            }
+        }
+        break;
+    case 4:
+        for (int i = 0; i < anmlCount; i++) {
+            if (slct == species[i]) {
+                cout << "Index[" << i << "] " << "(Name: " << names[i] << " - Sex: " << sexes[i] << ")" << endl;
+            }
+        }
+        break;
+    case 5:
+        for (int i = 0; i < anmlCount; i++) {
+            if (slct == species[i]) {
+                cout << "Index[" << i << "] " << "(Name: " << names[i] << " - Qtty: " << quantities[i] << "u)" << endl;
+            }
+        }
+        break;
+    case 6:
+        cout << "[Exiting...]\n";
+        break;
+    }
 }
 
 void addSpecies() {
     cout << "=== Add Species =====================\n";
-    if (spcCount <= 10) {
+    
+    if (spcsCount <= 10) {
         cout << "Enter species name: ";
-        cin >> registeredSpcs[spcCount];
-        spcCount++;
+        cin >> registeredSpcs[spcsCount];
+        while (!isString(registeredSpcs[spcsCount])) {
+            clearIn();
+            cout << "Invalid data, try again: ";
+            cin >> registeredSpcs[spcsCount];
+        }
+        spcsCount++;
     } else {
-        cout << "You have reached the maximum number of species allowed.\n";
+        cout << "[You have reached the maximum number of species allowed.]\n";
     }
     clearIn();
 }
@@ -256,7 +353,7 @@ void addSpecies() {
 void zooReport() {
     cout
         << "=== Zoo Report ======================\n"
-        << "Species: " << spcCount << endl
+        << "Species: " << spcsCount << endl
         << "Animals: " << anmlCount << endl
         << "===================================\n";
 }
@@ -270,7 +367,7 @@ void mainMenu() {
         << "=== Menu ============================\n"
         << "1. Add animal [By species]\n"
         << "2. Modify animal [Properties]\n"
-        << "3. List animals [Species - Name]\n"
+        << "3. List animals [Name - Species]\n"
         << "4. Zoo details [By species]\n"
         << "5. Add Species [Name]\n"
         << "6. Zoo report [Matrix]\n"
@@ -293,7 +390,7 @@ void mainMenu() {
             wait();
             break;
         case 4:
-            zooDetails();
+            zooDetails(); //! DONE
             wait();
             break;
         case 5:
@@ -305,12 +402,12 @@ void mainMenu() {
             wait();
             break;
         case 7:
-            cout << "Nos welemos luego biejo! :)\n";
+            cout << "[Bye!]\n";
             flag = false;
             wait();
             break;
         default:
-            cout << "Invalid option\n";
+            cout << "[Invalid option]\n";
             wait();
             break;
         }
@@ -341,7 +438,7 @@ int main() {
         }
         clearIn();
     }
-    cout << "Thank you! Your zoo will now be created." << endl;
+    cout << "[Thank you! Your zoo will now be created.]" << endl;
     wait();
 
     mainMenu();
