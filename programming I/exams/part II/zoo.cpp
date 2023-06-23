@@ -318,6 +318,12 @@ void mainMenu() {
 }
 
 int main() {
+    #ifdef _WIN32
+        system("cls");
+    #elif __linux__
+        system("clear");    
+    #endif
+
     cout 
         << "===Welcome to the Zoo!=============\n"
         << "To start off, please enter the names\n" 
@@ -328,6 +334,11 @@ int main() {
     for (int i = 0; i < 5; i++) {
         cout << "Enter species " << i + 1 << ": ";
         cin >> registeredSpcs[i];
+        while (!isString(registeredSpcs[i])) {
+            clearIn();
+            cout << "Invalid data, try again: ";
+            cin >> registeredSpcs[i];
+        }
         clearIn();
     }
     cout << "Thank you! Your zoo will now be created." << endl;
