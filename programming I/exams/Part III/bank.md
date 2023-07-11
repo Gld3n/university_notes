@@ -8,6 +8,8 @@
 * ID (_e.g: 41946230_)
 * Initial balance (_e.g: 1000_)
 
+---
+
 ### MENU
 
 1. ### **Add person (_Create account_)**
@@ -39,6 +41,6 @@
   * Amount
   * Operation type  
 
-#### **EXTRA**
+* #### **EXTRA**
 
-* To transfer, the current user must enter the ID of the person who will receive the money
+  * To transfer, the current user must enter the ID of the person who will receive the money
