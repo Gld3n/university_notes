@@ -3,6 +3,20 @@
 
 using namespace std;
 
+//* Classes
+class Account {
+public:    
+    string Name;
+    string Id;
+    float Balance;
+
+    Account(string name, string id, float balance) {
+        Name = name;
+        Id = id;
+        Balance = balance;
+    }
+};
+
 //* Utility functions
 void wait() {
     cout << "\n[Press enter to continue...]";
@@ -31,21 +45,14 @@ bool isString(const string& input) {
     return true;
 }
 
-
-//* Classes
-class Account {
-public:    
-    string Name;
-    string Id;
-    float Balance;
-
-    Account(string name, string id, float balance) {
-        Name = name;
-        Id = id;
-        Balance = balance;
+Account checkUser(string id, list<Account> accounts) {
+    for (Account account : accounts) {
+        if (account.Id == id) {
+            cout << "Logged in successfully. Welcome, " << account.Name;
+            return account;
+        }
     }
-};
-
+}
 
 //* Main functions
 void createAccount(list<Account> account_list) {
@@ -68,10 +75,83 @@ void createAccount(list<Account> account_list) {
     account_list.push_back(new_account);
 }
 
-void login() {
+void operations(Account origin, list<Account> accounts) {
+    int opOpt;
+
+    cout
+        << "=== Operations ======================\n"
+        << "1. Deposit\n"
+        << "2. Transfer\n"
+        << "3. Withdraw\n"
+        << "Option: ";
+    cin >> opOpt;
+    while (opOpt < 1 || opOpt > 3 || cin.fail()) {
+        clearIn();
+        cout << "Invalid option, try again: ";
+        cin >> opOpt;
+    }
+    clearIn();
+
+    switch(opOpt) {
+        case 1:
+            // deposit();
+            break;
+        case 2:
+            // transfer();
+            break;
+        case 3:
+            // withdraw();
+            break;
+        default:
+            cout << "[Invalid option. Try again.]: ";
+            break;
+    }
+
+}
+
+void login(list<Account> account_list) {
     string id;
-    cout << "Enter id: ";
+
+    cout << "=== Login ===========================\n";
+    cout << "Insert your ID: ";
     cin >> id;
+    while (!isString(id)) {
+        cin.clear();
+        cout << "[Invalid ID. Try again.]: " << endl;
+        cin >> id;
+    }
+    clearIn();
+    
+    Account logged_account = checkUser(id, account_list);
+
+    int accOpt;
+
+    cout 
+        << "=== Account =========================\n"
+        << "1. Operations\n"
+        << "2. History of operations\n"
+        << "3. <= Back\n"
+        << "Option: ";
+    cin >> accOpt;
+    while (accOpt < 1 || accOpt > 4 || cin.fail()) {
+        clearIn();
+        cout << "Invalid option, try again: ";
+        cin >> accOpt;
+    }
+    clearIn();
+
+    switch(accOpt) {
+        case 1:
+            // operations();
+            break;
+        case 2:
+            // history();
+            break;
+        case 3:
+            cout << "[Exiting...]";
+            break;
+        default:
+    }
 }
 
 int main() {
@@ -83,7 +163,7 @@ int main() {
 
     int opt;
     bool flag = true;
-    list<Account> accounts;
+    list<Account> system_accounts;
     
     do {
         cout
@@ -97,7 +177,7 @@ int main() {
 
         switch (opt) {
         case 1:
-            createAccount(accounts);
+            createAccount(system_accounts);
             wait();
             break;
         case 2:
@@ -114,11 +194,4 @@ int main() {
             break;
         }
     } while (flag);
-
-    for (Account account : accounts) {
-        cout
-            << "Name: " << account.Name << endl
-            << "Id: " << account.Id << endl
-            << "Balance: " << account.Balance << endl;
-    }
 }
