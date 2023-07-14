@@ -1,24 +1,20 @@
-//TODO: Check for double wait() calls
-//TODO: Setters implemented. Pointers need to be used.
-//TODO: Final check for any bugs, missing features or improvements
-
 # include <iostream>
 
 using namespace std;
 
-int account_count = 0;
+int accountCount = 0;
 
 //! Classes
 class Account {
 public:    
     string Name;
     string Id;
-    float Balance;
+    double Balance;
     string History[64];
     int EntryCount = 0;
 
     Account() {} //* Default constructor
-    Account(string name, string id, float balance) { //* Constructor
+    Account(string name, string id, double balance) { //* Constructor
         Name = name;
         Id = id;
         Balance = balance;
@@ -26,17 +22,15 @@ public:
 
     string getHistory() {
         string history = "";
-        for (int i = 0; i < sizeof(History); i++) {
+        for (int i = 0; i < EntryCount; i++) {
             history += History[i] + "\n";
         }
         return history;
     }
 
     void setHistory(string entry) {
-        cout << Balance << " - " << EntryCount << History[0] << endl; //! Erase when finished debugging
         History[EntryCount] = entry;
         EntryCount++;
-        cout << Balance << " - " << EntryCount << " - " << History[0] << endl; //! Erase when finished debugging
     }
 };
 
@@ -76,8 +70,17 @@ bool isString(const string& input) {
     return true;
 }
 
+Account* findTarget(string id, Account accounts[]) {
+    for (int i = 0; i < accountCount; i++) {
+        if (id == accounts[i].Id) {
+            return &accounts[i];
+        }
+    }
+    return nullptr;
+}
+
 Account checkUser(string id, Account accounts[]) {
-    for (int i = 0; i < account_count; i++) {
+    for (int i = 0; i < accountCount; i++) {
         if (id == accounts[i].Id) {
             return accounts[i];
         }
@@ -86,20 +89,15 @@ Account checkUser(string id, Account accounts[]) {
 }
 
 //! ACCOUNT OPERATIONS
-void deposit(Account origin) {
-    float amount;
+void deposit(Account& origin) {
+    double amount;
     cleanScreen();
 
     cout << "=== Deposit =========================\n";
 
-    if (origin.Balance == 0) {
-        cout << "[You have no money to deposit.]\n";
-        return;
-    }
-
     cout << "Enter amount to deposit (current balance: $" << origin.Balance << "): ";
     cin >> amount;
-    while (amount <= 0 || cin.fail()) {
+    while (cin.fail() || amount <= 0) {
         clearIn();
         cout << "Invalid data or amount, try again: ";
         cin >> amount;
@@ -110,10 +108,11 @@ void deposit(Account origin) {
     origin.setHistory("Amount: $" + to_string(amount) + " | Type: Deposit");
 
     cout << "[Deposit successful.]\n";
+    cout << "[New balance: $" << origin.Balance << "]\n";
 }
 
-void transfer(Account origin, Account accounts[]) {
-    string id; float amount;
+void transfer(Account& origin, Account* accounts) {
+    string id; double amount;
     cleanScreen();
 
     cout << "=== Transfer =========================\n";
@@ -121,7 +120,7 @@ void transfer(Account origin, Account accounts[]) {
     if (origin.Balance == 0) {
         cout << "[You have no money to transfer.]\n";
         return;
-    } else if (account_count < 2) {
+    } else if (accountCount < 2) {
         cout << "[There are no other accounts to transfer to.]\n";
         return;
     }
@@ -135,36 +134,31 @@ void transfer(Account origin, Account accounts[]) {
     }
     clearIn();
 
-    Account target = checkUser(id, accounts);
-    if (target.Id == "") {
+    Account* target = findTarget(id, accounts);
+    if (target == nullptr) {
         cout << "[User not found.]\n";
         return;
     }
 
     cout << "Enter amoun to transfer (current balance: $" << origin.Balance << "): ";
     cin >> amount;
-    while (amount <= 0 || cin.fail()) {
+    while (cin.fail() || amount <= 0 || amount > origin.Balance) {
         clearIn();
         cout << "Invalid data or amount, try again: ";
         cin >> amount;
     }
     clearIn();
 
-    if (origin.Balance < amount) {
-        cout << "[Insufficient funds.]\n";
-        return;
-    }
-
-    target.Balance += amount;
     origin.Balance -= amount;
+    target->Balance += amount;
 
-    origin.setHistory("Target: " + target.Id + " | Amount: $" + to_string(amount) + " | Type: Transfer");
+    origin.setHistory("Target: V" + target->Id + " | Amount: $" + to_string(amount) + " | Type: Transfer");
 
     cout << "[Transfer successful.]\n";
 }
 
-void withdraw(Account origin) {
-    float amount;
+void withdraw(Account& origin) {
+    double amount;
     cleanScreen();
 
     cout << "=== Withdraw =========================\n";
@@ -176,17 +170,12 @@ void withdraw(Account origin) {
 
     cout << "Enter amount to withdraw (current balance: $" << origin.Balance << "): ";
     cin >> amount;
-    while (amount <= 0 || cin.fail()) {
+    while (cin.fail() || amount <= 0 || amount > origin.Balance) {
         clearIn();
         cout << "Invalid data or amount, try again: ";
         cin >> amount;
     }
     clearIn();
-
-    if (origin.Balance < amount) {
-        cout << "[Insufficient funds.]\n";
-        return;
-    }
 
     origin.Balance -= amount;
     origin.setHistory("Amount: $" + to_string(amount) + " | Type: Withdraw");
@@ -195,7 +184,7 @@ void withdraw(Account origin) {
 }
 
 //! ACCOUNT FUNCTIONS
-void operations(Account origin, Account accounts[]) {
+void operations(Account& origin, Account* accounts, int accountCount) {
     int opOpt; bool flag = true;
     cleanScreen();
 
@@ -245,8 +234,7 @@ void history(Account origin) {
     cleanScreen();
     cout << "=== History =========================\n";
 
-    cout << origin.EntryCount << "AAA";
-    if (account_count == 0) {
+    if (accountCount == 0) {
         cout << "[There are no accounts to show history for.]\n";
         return;
     } else if (origin.History->length() == 0) {
@@ -258,8 +246,8 @@ void history(Account origin) {
 }
 
 //! MAIN FUNCTIONS
-void createAccount(Account account_list[]) {
-    string name, id; float balance;
+void createAccount(Account* accounts, int& accountCount) {
+    string name, id; double balance;
 
     cleanScreen();
     cout << "=== Create account ==================\n";
@@ -274,7 +262,7 @@ void createAccount(Account account_list[]) {
 
     cout << "Enter ID: ";
     cin >> id;
-    while (cin.fail() || id.length() < 7 || id.length() > 8 || id.empty()) {
+    while (cin.fail() || id.length() < 7 || id.length() > 8) {
         clearIn();
         cout << "Invalid data, try again: ";
         cin >> id;
@@ -290,26 +278,27 @@ void createAccount(Account account_list[]) {
     }
     clearIn();
 
-    Account new_account = Account(name, id, balance);
+    Account* newAccount = new Account(name, id, balance);
     cleanScreen();
 
     cout
         << "[Account created successfully!]\n"
-        << "- Name: " << new_account.Name << endl
-        << "- ID: " << new_account.Id << endl
-        << "- Balance: " << new_account.Balance << endl;
+        << "- Name: " << newAccount->Name << endl
+        << "- ID: " << newAccount->Id << endl
+        << "- Balance: " << newAccount->Balance << endl;
 
-    account_list[account_count] = new_account;
-    account_count++;
+    accounts[accountCount] = *newAccount;
+    accountCount++;
+    delete newAccount;
 }
 
-void login(Account account_list[]) {
+void login(Account* accounts, int accountCount) {
     cleanScreen();
     string id;
 
     cout << "=== Login ===========================\n";
 
-    if (account_count == 0) {
+    if (accountCount == 0) {
         cout << "[There are no accounts to log in to.]\n";
         return;
     }
@@ -323,8 +312,8 @@ void login(Account account_list[]) {
     }
     clearIn();
     
-    Account userAccount = checkUser(id, account_list);
-    if (userAccount.Id == "") {
+    Account userAccount = checkUser(id, accounts);
+    if (userAccount.Name == "") {
         cout << "[User not found.]\n";
         return;
     }
@@ -334,9 +323,9 @@ void login(Account account_list[]) {
     
     int accOpt;
     bool flag = true;
-    cleanScreen();
 
     do {
+        cleanScreen();
         cout 
             << "=== Account =========================\n"
             << "1. Operations\n"
@@ -353,10 +342,11 @@ void login(Account account_list[]) {
 
         switch(accOpt) {
             case 1:
-                operations(userAccount, account_list);
+                operations(userAccount, accounts, accountCount);
                 break;
             case 2:
                 history(userAccount);
+                wait();
                 break;
             case 3:
                 cout << "[Exiting...]";
@@ -375,7 +365,7 @@ int main() {
 
     int opt;
     bool flag = true;
-    Account systemAccounts[12];
+    Account* systemAccounts = new Account[12];
     
     do {
         cout
@@ -389,12 +379,11 @@ int main() {
 
         switch (opt) {
         case 1:
-            createAccount(systemAccounts);
+            createAccount(systemAccounts, accountCount);
             wait();
             break;
         case 2:
-            login(systemAccounts);
-            wait();
+            login(systemAccounts, accountCount);
             break;
         case 3:
             cout << "[Exiting...]\n";
