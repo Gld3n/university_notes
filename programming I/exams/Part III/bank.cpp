@@ -1,5 +1,5 @@
 //TODO: Check for double wait() calls
-//TODO: Implement setters for Account class to be able to modify data
+//TODO: Setters implemented. Pointers need to be used.
 //TODO: Final check for any bugs, missing features or improvements
 
 # include <iostream>
@@ -8,13 +8,14 @@ using namespace std;
 
 int account_count = 0;
 
-//* Classes
+//! Classes
 class Account {
 public:    
     string Name;
     string Id;
     float Balance;
     string History[64];
+    int EntryCount = 0;
 
     Account() {} //* Default constructor
     Account(string name, string id, float balance) { //* Constructor
@@ -30,9 +31,16 @@ public:
         }
         return history;
     }
+
+    void setHistory(string entry) {
+        cout << Balance << " - " << EntryCount << History[0] << endl; //! Erase when finished debugging
+        History[EntryCount] = entry;
+        EntryCount++;
+        cout << Balance << " - " << EntryCount << " - " << History[0] << endl; //! Erase when finished debugging
+    }
 };
 
-//* UTILITY FUNCTIONS
+//! UTILITY FUNCTIONS
 void wait() {
     cout << "\n[Press enter to continue...]";
     cin.ignore();
@@ -77,7 +85,7 @@ Account checkUser(string id, Account accounts[]) {
     return Account("", "", 0);
 }
 
-//* ACCOUNT OPERATIONS
+//! ACCOUNT OPERATIONS
 void deposit(Account origin) {
     float amount;
     cleanScreen();
@@ -99,7 +107,7 @@ void deposit(Account origin) {
     clearIn();
 
     origin.Balance += amount;
-    origin.History[origin.History->length()] = "Amount: $" + to_string(amount) + " | Type: Deposit";
+    origin.setHistory("Amount: $" + to_string(amount) + " | Type: Deposit");
 
     cout << "[Deposit successful.]\n";
 }
@@ -150,7 +158,7 @@ void transfer(Account origin, Account accounts[]) {
     target.Balance += amount;
     origin.Balance -= amount;
 
-    origin.History[origin.History->length()] = "Target: " + target.Id + " | Amount: $" + to_string(amount) + " | Type: Transfer";
+    origin.setHistory("Target: " + target.Id + " | Amount: $" + to_string(amount) + " | Type: Transfer");
 
     cout << "[Transfer successful.]\n";
 }
@@ -181,12 +189,12 @@ void withdraw(Account origin) {
     }
 
     origin.Balance -= amount;
-    origin.History[origin.History->length()] = "Amount: $" + to_string(amount) + " | Type: Withdraw";
+    origin.setHistory("Amount: $" + to_string(amount) + " | Type: Withdraw");
 
     cout << "[Withdraw successful. Now imagine there's money coming out somewhere.]\n";
 }
 
-//* ACCOUNT FUNCTIONS
+//! ACCOUNT FUNCTIONS
 void operations(Account origin, Account accounts[]) {
     int opOpt; bool flag = true;
     cleanScreen();
@@ -236,7 +244,8 @@ void operations(Account origin, Account accounts[]) {
 void history(Account origin) {
     cleanScreen();
     cout << "=== History =========================\n";
-    
+
+    cout << origin.EntryCount << "AAA";
     if (account_count == 0) {
         cout << "[There are no accounts to show history for.]\n";
         return;
@@ -248,7 +257,7 @@ void history(Account origin) {
     cout << origin.getHistory();
 }
 
-//* MAIN FUNCTIONS
+//! MAIN FUNCTIONS
 void createAccount(Account account_list[]) {
     string name, id; float balance;
 
@@ -347,7 +356,7 @@ void login(Account account_list[]) {
                 operations(userAccount, account_list);
                 break;
             case 2:
-                // history();
+                history(userAccount);
                 break;
             case 3:
                 cout << "[Exiting...]";
