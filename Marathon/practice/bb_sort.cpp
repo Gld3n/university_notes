@@ -1,13 +1,13 @@
 #include <iostream>
 #include <vector>
 
-std::vector<int> bubbleSort(std::vector<int> array) {
-    // Do not modify the original array
+std::vector<int> bubbleSort(const std::vector<int> array) {
+    // Can't modify the original array
     std::vector<int> result = array;
 
-    for (int i = 0; i < std::size(array) - 1; i++) {
-        // Swap the elements if the current element is greater than the next one
-        if (array[i] > array[i + 1]) {
+    for (int i = 0; i < std::size(result) - 1; i++) {
+        // Swap the elements if the current one is greater than the next one
+        if (result[i] > result[i + 1]) {
             std::swap(result[i], result[i + 1]);            
         }
     }
