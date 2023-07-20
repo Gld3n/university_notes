@@ -12,6 +12,8 @@ Learning and put in practice the concepts of data structures
 
 ### Courses & Tutorials
 
-* [**C++ OOP Course** - FCC & CodeBeauty](https://www.youtube.com/watch?v=wN0x9eZLix4)
 * [**C++ Containers** - Javdx9 (OneLoneCoder)](https://www.youtube.com/watch?v=6OoSgY6NVVk)
+* [**C++ OOP Course** - FCC & CodeBeauty](https://www.youtube.com/watch?v=wN0x9eZLix4)
+* [**A bit of string manipulation** - Kindson](https://www.kindsonthegenius.com/cplusplus/c-string-manipulation/)
+* [**C++ STL Overview** - GeeksforGeeks](https://www.geeksforgeeks.org/the-c-standard-template-library-stl/)
 * [**C++ Review** - Codecademy](https://www.codecademy.com/courses/learn-c-plus-plus)
