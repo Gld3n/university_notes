@@ -1,4 +1,6 @@
 # include <iostream>
+# include <string>
+# include "utility.hpp"
 
 using namespace std;
 
@@ -35,40 +37,6 @@ public:
 };
 
 //! UTILITY FUNCTIONS
-void wait() {
-    cout << "\n[Press enter to continue...]";
-    cin.ignore();
-    #ifdef _WIN32
-        system("cls");
-    #elif __linux__
-        system("clear");    
-    #endif
-}
-
-void cleanScreen() {
-    #ifdef _WIN32
-        system("cls");
-    #elif __linux__
-        system("clear");    
-    #endif
-}
-
-void clearIn() {
-    cin.clear();
-    cin.ignore(100000, '\n');
-}
-
-bool isString(const string& input) {
-    if (input.empty()) {
-        return false;
-    }
-    for (char c : input) {
-        if (!isalpha(c) && !isspace(c)) {
-            return false;
-        }
-    }
-    return true;
-}
 
 Account* findTarget(string id, Account accounts[]) {
     for (int i = 0; i < accountCount; i++) {
@@ -91,7 +59,7 @@ Account checkUser(string id, Account accounts[]) {
 //! ACCOUNT OPERATIONS
 void deposit(Account& origin) {
     double amount;
-    cleanScreen();
+    clearScreen();
 
     cout << "=== Deposit =========================\n";
 
@@ -113,7 +81,7 @@ void deposit(Account& origin) {
 
 void transfer(Account& origin, Account* accounts) {
     string id; double amount;
-    cleanScreen();
+    clearScreen();
 
     cout << "=== Transfer =========================\n";
 
@@ -159,7 +127,7 @@ void transfer(Account& origin, Account* accounts) {
 
 void withdraw(Account& origin) {
     double amount;
-    cleanScreen();
+    clearScreen();
 
     cout << "=== Withdraw =========================\n";
 
@@ -186,7 +154,7 @@ void withdraw(Account& origin) {
 //! ACCOUNT FUNCTIONS
 void operations(Account& origin, Account* accounts, int accountCount) {
     int opOpt; bool flag = true;
-    cleanScreen();
+    clearScreen();
 
     do {
         cout
@@ -231,7 +199,7 @@ void operations(Account& origin, Account* accounts, int accountCount) {
 }
 
 void history(Account origin) {
-    cleanScreen();
+    clearScreen();
     cout << "=== History =========================\n";
 
     if (accountCount == 0) {
@@ -249,7 +217,7 @@ void history(Account origin) {
 void createAccount(Account* accounts, int& accountCount) {
     string name, id; double balance;
 
-    cleanScreen();
+    clearScreen();
     cout << "=== Create account ==================\n";
     cout << "Enter name: ";
     getline(cin, name);
@@ -279,7 +247,7 @@ void createAccount(Account* accounts, int& accountCount) {
     clearIn();
 
     Account* newAccount = new Account(name, id, balance);
-    cleanScreen();
+    clearScreen();
 
     cout
         << "[Account created successfully!]\n"
@@ -293,7 +261,7 @@ void createAccount(Account* accounts, int& accountCount) {
 }
 
 void login(Account* accounts, int accountCount) {
-    cleanScreen();
+    clearScreen();
     string id;
 
     cout << "=== Login ===========================\n";
@@ -325,7 +293,7 @@ void login(Account* accounts, int accountCount) {
     bool flag = true;
 
     do {
-        cleanScreen();
+        clearScreen();
         cout 
             << "=== Account =========================\n"
             << "1. Operations\n"
@@ -361,7 +329,7 @@ void login(Account* accounts, int accountCount) {
 }
 
 int main() {
-    cleanScreen();
+    clearScreen();
 
     int opt;
     bool flag = true;
