@@ -20,7 +20,7 @@ void calculate_appearances(std::vector<string>& words, std::vector<string>& text
             }
         }
 
-        cout << "- " << word << ": " << count << endl;
+        cout << "- " << word << " = " << count << endl;
     }
 }
 
@@ -102,7 +102,7 @@ void statistics(std::vector<string>& words, std::vector<string>& texts) {
     cout << endl;
 
     cout << "[Current text]" << endl;   
-    cout << "- " << texts[0] << endl;
+    cout << "'" << texts[0] << "'" << endl;
 }
 
 int main() {
@@ -139,6 +139,7 @@ int main() {
                 break;
             case 4:
                 cout << "[Exiting...]" << endl;
+                wait();
                 signal = false;
                 break;
             default:
@@ -147,4 +148,6 @@ int main() {
                 break;
         }
     } while (signal);
+
+    clearScreen();
 }
