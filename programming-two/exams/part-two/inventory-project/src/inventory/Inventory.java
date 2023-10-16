@@ -142,7 +142,8 @@ public class Inventory {
 				+ "2. Name\n"
 				+ "3. Price\n"
 				+ "4. Quantity\n"
-				+ "5. Exit\n"
+				+ "5. Discount\n"
+				+ "6. Exit\n"
 				+ "Option: ");
 		Integer opt = optScanner.nextInt();
 		
@@ -205,6 +206,19 @@ public class Inventory {
 				}
 				break;
 			case 5:
+				while (true) {
+					System.out.print("New discount (%): ");
+					Integer productDiscount = switchScanner.nextInt();
+					switchScanner.nextLine();
+					if (productDiscount >= 0 && productDiscount < 100) {
+						products.get(index).discount = productDiscount;
+						break;
+					}
+					
+					System.out.println("[Invalid discount. Must be between 0 and 100]");
+				}
+				break;
+			case 6:
 				System.out.println("[Exiting...]");
 				break;
 			default:

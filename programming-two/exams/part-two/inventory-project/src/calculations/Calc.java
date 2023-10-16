@@ -157,7 +157,10 @@ public class Calc {
 		Double total = 0.0;
 		
 		for (Integer i = 0; i < products.size(); i++) {
-			total += products.get(i).price * products.get(i).quantity;
+			Product currentProduct = products.get(i);
+			Double grossProduct = currentProduct.price * currentProduct.quantity;
+			Double netProduct = grossProduct - (grossProduct * currentProduct.discount / 100);
+			total += netProduct;
 		}
 		
 		Double netTotal = total + (total * IVA);
