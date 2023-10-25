@@ -2,11 +2,11 @@ package entities;
 
 public abstract class User {
 
-    String id;
-    String name;
-    String username;
-    String password;
-    String phoneNumber;
+    private String id;
+    private String name;
+    private String username;
+    private String password;
+    private String phoneNumber;
 
     // Constructor
     public User(String id, String name, String username, String password, String phoneNumber) {
