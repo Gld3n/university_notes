@@ -2,10 +2,11 @@ package schemas;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import auth.Auth.Role;
 
 public class Client extends User {
 	
-	private final String role = "Client";
+	private final Role role = Role.CLIENT;
 	private Double balance = 0.0;
 
 	// Constructor
@@ -14,7 +15,7 @@ public class Client extends User {
 	}
 
 	// Getters
-	public String getRole() {
+	public Role getRole() {
 		return this.role;
 	}
 
@@ -24,8 +25,11 @@ public class Client extends User {
 
 	@Override
 	public void menu(Scanner scanner, ArrayList<User> users, User loggedUser) {
-		
-		System.out.print("=== [CLIENT MENU] =====================\n"
+		Client client = (Client) loggedUser;
+		Boolean alive = true;
+
+		do {
+			System.out.print("=== [CLIENT MENU] =====================\n"
 			+ "1. [Account data]\n"
 			+ "2. [Modify account data]\n"
 			+ "3. [Transfer money]\n"
@@ -33,30 +37,32 @@ public class Client extends User {
 			+ "5. [Withdraw money]\n"
 			+ "6. [Exit]\n"
 			+ "\nOption: "
-		);
-		Integer option = scanner.nextInt();
-		scanner.nextLine();
-		
-		switch(option) {
-			case 1:
-				showAccountData(users, (Client) loggedUser);
-				break;
-			case 2:
-				System.out.println("[Modify account data]");
-				break;
-			case 3:
-				System.out.println("[Transfer money]");
-				break;
-			case 4:
-				System.out.println("[Deposit money]");
-				break;
-			case 5:
-				System.out.println("[Withdraw money]");
-				break;
-			case 6:
-				System.out.println("[Exiting...]");
-				break;
-		}
+			);
+			Integer option = scanner.nextInt();
+			scanner.nextLine();
+			
+			switch(option) {
+				case 1:
+					showAccountData(users, (Client) loggedUser);
+					break;
+				case 2:
+					System.out.println("[Modify account data]");
+					break;
+				case 3:
+					System.out.println("[Transfer money]");
+					break;
+				case 4:
+					System.out.println("[Deposit money]");
+					break;
+				case 5:
+					System.out.println("[Withdraw money]");
+					break;
+				case 6:
+					System.out.println("[Exiting...]");
+					alive = false;
+					break;
+			}
+		} while (alive);
 	}
 
 	// Menu methods

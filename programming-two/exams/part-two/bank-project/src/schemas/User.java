@@ -55,5 +55,5 @@ public abstract class User {
     }
 
     // Methods
-    abstract void menu(Scanner scanner, ArrayList<User> users, User loggedUser);
+    public abstract void menu(Scanner scanner, ArrayList<User> users, User loggedUser);
 }

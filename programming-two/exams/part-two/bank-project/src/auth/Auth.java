@@ -1,37 +1,35 @@
 package auth;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import schemas.*;
+import static menu.Utils.waitForUserInput;
 
-import java.util.ArrayList;
 
 public class Auth {
 
-    enum Role {
+    public static enum Role {
         OPERATOR,
         CLIENT
     }
     
     public static void signUp(Scanner scanner, ArrayList<User> users) {
-        System.out.print("=== [SIGN UP] ==========================\n"
-            + "ID: "
-        );
-        String id = scanner.nextLine();
-        System.out.print("Name: ");
-        String name = scanner.nextLine();
-        System.out.print("Username: ");
-        String username = scanner.nextLine();
-        System.out.print("Password: ");
-        String password = scanner.nextLine();
-        System.out.print("Phone number: ");
-        String phoneNumber = scanner.nextLine();
-        System.out.println("Role: ");
-        Role role = selectUserRole(scanner);
+        System.out.print("=== [SIGN UP] ==========================\n");
 
-        if (role == null) {
-            return;
-        }
+        String id;
+        String name;
+        String username;
+        String password;
+        String phoneNumber;
+        Role role;
+
+        id = AuthUtils.inputId(scanner, users);
+        name = AuthUtils.inputName(scanner);
+        username = AuthUtils.inputUsername(scanner, users);
+        password = AuthUtils.inputPassword(scanner);
+        phoneNumber = AuthUtils.inputPhoneNumber(scanner);
+        role = AuthUtils.selectUserRole(scanner);
 
         switch (role) {
             case OPERATOR:
@@ -44,62 +42,34 @@ public class Auth {
                 break;
             default:
                 System.out.println("[Invalid role]");
-                break;
+                return;
         }
 
+        System.out.println("[User created successfully]");
+        waitForUserInput(scanner);
     }
 
     public static void login(Scanner scanner, ArrayList<User> users) {
 		System.out.print("=== [LOGIN] ============================\n"
 			+ "Username: "
 		);
-		String username = scanner.nextLine();
+		String username = scanner.nextLine().toLowerCase().strip();
 		System.out.print("Password: ");
 		String password = scanner.nextLine();
 
-		User user = findUser(username, password, users);
+		User user = AuthUtils.authUser(username, password, users);
 
 		if (user == null) {
 			System.out.println("[Invalid username or password]");
             return;
 		}
 
-        // if (user instanceof Operator) {
-        //     OperatorMenu.menu(scanner, users, (Operator) user);
-        // } else if (user instanceof Client) {
-        //     ClientMenu.menu(scanner, users, (Client) user);
-        // } else {
-        //     System.out.println("[Invalid user]");
-        // }
-
-		System.out.println("[Welcome, " + user.getName() + "]");
-	}
-
-	private static User findUser(String username, String password, ArrayList<User> users) {
-		for (User user : users) {
-			if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
-				return user;
-			}
-		}
-		return null;
-	}
-
-    private static Role selectUserRole(Scanner scanner) {
-        for (Role role : Role.values()) {
-            System.out.println("  " + (role.ordinal() + 1) + ". " + role.name());
+        if (user instanceof Operator) {
+            user.menu(scanner, users, (Operator) user);
+        } else if (user instanceof Client) {
+            user.menu(scanner, users, (Client) user);
+        } else {
+            System.out.println("[Invalid user]");
         }
-        System.out.print("  Option: ");
-        Integer selectedRole = scanner.nextInt();
-        scanner.nextLine();
-        
-        switch (selectedRole) {
-            case 1:
-                return Role.OPERATOR;
-            case 2:
-                return Role.CLIENT;
-            default:
-                System.out.println("[Invalid option]");
-                return null;
-        }
-    } 
+	}
 }
