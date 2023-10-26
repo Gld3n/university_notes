@@ -1,4 +1,7 @@
-package entities;
+package schemas;
+
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public abstract class User {
 
@@ -50,4 +53,7 @@ public abstract class User {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+    // Methods
+    abstract void menu(Scanner scanner, ArrayList<User> users, User loggedUser);
 }

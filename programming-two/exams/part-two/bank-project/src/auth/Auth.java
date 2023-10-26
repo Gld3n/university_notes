@@ -1,9 +1,10 @@
-package main;
+package auth;
 
 import java.util.Scanner;
-import java.util.ArrayList;
 
-import entities.*;
+import schemas.*;
+
+import java.util.ArrayList;
 
 public class Auth {
 
@@ -25,7 +26,7 @@ public class Auth {
         String password = scanner.nextLine();
         System.out.print("Phone number: ");
         String phoneNumber = scanner.nextLine();
-        System.out.print("Role: ");
+        System.out.println("Role: ");
         Role role = selectUserRole(scanner);
 
         if (role == null) {
@@ -60,7 +61,16 @@ public class Auth {
 
 		if (user == null) {
 			System.out.println("[Invalid username or password]");
+            return;
 		}
+
+        // if (user instanceof Operator) {
+        //     OperatorMenu.menu(scanner, users, (Operator) user);
+        // } else if (user instanceof Client) {
+        //     ClientMenu.menu(scanner, users, (Client) user);
+        // } else {
+        //     System.out.println("[Invalid user]");
+        // }
 
 		System.out.println("[Welcome, " + user.getName() + "]");
 	}
@@ -76,9 +86,9 @@ public class Auth {
 
     private static Role selectUserRole(Scanner scanner) {
         for (Role role : Role.values()) {
-            System.out.println((role.ordinal() + 1) + ". " + role.name());
+            System.out.println("  " + (role.ordinal() + 1) + ". " + role.name());
         }
-        System.out.print("Option: ");
+        System.out.print("  Option: ");
         Integer selectedRole = scanner.nextInt();
         scanner.nextLine();
         

@@ -1,9 +1,10 @@
-package main;
+package menu;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import entities.*;
+import auth.Auth;
+import schemas.*;
 
 public class IndexMenu {
 
