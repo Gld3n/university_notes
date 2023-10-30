@@ -3,6 +3,8 @@ package menu;
 import java.util.Scanner;
 
 public class Utils {
+
+	public static Double exchangeRate = 40.0;
     
     public static void clearScreen() {
 	    if (System.getProperty("os.name").toLowerCase().contains("windows")) {

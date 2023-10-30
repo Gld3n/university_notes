@@ -5,11 +5,11 @@ import java.util.Scanner;
 
 public abstract class User {
 
-    private String id;
-    private String name;
-    private String username;
-    private String password;
-    private String phoneNumber;
+    protected String id;
+    protected String name;
+    protected String username;
+    protected String password;
+    protected String phoneNumber;
 
     // Constructor
     public User(String id, String name, String username, String password, String phoneNumber) {
@@ -38,19 +38,19 @@ public abstract class User {
     }
 
     // Setters
-    public void setId(String id) {
+    public void setId(String id, Scanner scanner, ArrayList<User> users) {
         this.id = id;
     }
-    public void setName(String name) {
+    public void setName(String name, Scanner scanner, ArrayList<User> users) {
         this.name = name;
     }
-    public void setUsername(String username) {
+    public void setUsername(String username, Scanner scanner, ArrayList<User> users) {
         this.username = username;
     }
-    public void setPassword(String password) {
+    public void setPassword(String password, Scanner scanner, ArrayList<User> users) {
         this.password = password;
     }
-    public void setPhoneNumber(String phoneNumber) {
+    public void setPhoneNumber(String phoneNumber, Scanner scanner, ArrayList<User> users) {
         this.phoneNumber = phoneNumber;
     }
 

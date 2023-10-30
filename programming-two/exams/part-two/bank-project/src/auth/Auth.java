@@ -3,8 +3,8 @@ package auth;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import menu.Utils;
 import schemas.*;
-import static menu.Utils.waitForUserInput;
 
 
 public class Auth {
@@ -15,6 +15,7 @@ public class Auth {
     }
     
     public static void signUp(Scanner scanner, ArrayList<User> users) {
+        Utils.clearScreen();
         System.out.print("=== [SIGN UP] ==========================\n");
 
         String id;
@@ -45,14 +46,19 @@ public class Auth {
                 return;
         }
 
-        System.out.println("[User created successfully]");
-        waitForUserInput(scanner);
+        System.out.println("\n[User created successfully]");
     }
 
     public static void login(Scanner scanner, ArrayList<User> users) {
-		System.out.print("=== [LOGIN] ============================\n"
-			+ "Username: "
-		);
+        Utils.clearScreen();
+		System.out.print("=== [LOGIN] ============================");
+
+        if (users.isEmpty()) {
+            System.out.println("\n[No users registered]");
+            return;
+        }
+
+        System.out.print("\nUsername: ");
 		String username = scanner.nextLine().toLowerCase().strip();
 		System.out.print("Password: ");
 		String password = scanner.nextLine();

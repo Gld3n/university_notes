@@ -1,5 +1,7 @@
 package menu;
 
+import static menu.Utils.waitForUserInput;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -15,11 +17,12 @@ public class IndexMenu {
 		boolean alive = true;
 		
 		do {
+			Utils.clearScreen();
 			System.out.print("=== [MAIN MENU] ========================\n"
-			+ "1. [Sign up]\n"
-			+ "2. [Login]\n"
-			+ "3. [Exit]\n"
-			+ "\nOption: "
+				+ "1. [Sign up]\n"
+				+ "2. [Login]\n"
+				+ "3. [Exit]\n"
+				+ "\nOption: "
 			);
 			Integer option = scanner.nextInt();
 			scanner.nextLine();
@@ -27,9 +30,11 @@ public class IndexMenu {
 			switch (option) {
 				case 1:
 					Auth.signUp(scanner, users);
+					waitForUserInput(scanner);
 					break;
 				case 2:
 					Auth.login(scanner, users);
+					waitForUserInput(scanner);
 					break;
 				case 3:
 					System.out.println("[Exiting...]");
@@ -37,6 +42,7 @@ public class IndexMenu {
 					break;
 				default:
 					System.out.println("[Invalid option]");
+					waitForUserInput(scanner);
 					break;
 			}
 		} while (alive);

@@ -17,7 +17,7 @@ public class AuthUtils {
 		return null;
 	}
 
-    static User findUserByUsername(String username, ArrayList<User> users) {
+    public static User findUserByUsername(String username, ArrayList<User> users) {
         for (User user : users) {
             if (user.getUsername().equals(username)) {
                 return user;
@@ -26,7 +26,7 @@ public class AuthUtils {
         return null;
     }
 
-    static User findUserById(String id, ArrayList<User> users) {
+    public static User findUserById(String id, ArrayList<User> users) {
         for (User user : users) {
             if (user.getId().equals(id)) {
                 return user;
@@ -57,7 +57,7 @@ public class AuthUtils {
         } while (true);
     }
 
-    static String inputId(Scanner scanner, ArrayList<User> users) {
+    public static String inputId(Scanner scanner, ArrayList<User> users) {
         System.out.print("ID: ");
         do {
             String id = scanner.nextLine();
@@ -74,7 +74,7 @@ public class AuthUtils {
         } while (true);
     }
 
-    static String inputName(Scanner scanner) {
+    public static String inputName(Scanner scanner) {
         System.out.print("Name: ");
         do {
             String name = scanner.nextLine();
@@ -86,7 +86,7 @@ public class AuthUtils {
         } while (true);
     }
 
-    static String inputUsername(Scanner scanner, ArrayList<User> users) {
+    public static String inputUsername(Scanner scanner, ArrayList<User> users) {
         System.out.print("Username: ");
         do {
             String username = scanner.nextLine().toLowerCase().strip();
@@ -103,7 +103,7 @@ public class AuthUtils {
         } while (true);
     }
 
-    static String inputPassword(Scanner scanner) {
+    public static String inputPassword(Scanner scanner) {
         System.out.print("Password: ");
         do {
             String password = scanner.nextLine();
@@ -115,7 +115,7 @@ public class AuthUtils {
         } while (true);
     }
 
-    static String inputPhoneNumber(Scanner scanner) {
+    public static String inputPhoneNumber(Scanner scanner) {
         System.out.print("Phone number: ");
         do {
             String phoneNumber = scanner.nextLine();
