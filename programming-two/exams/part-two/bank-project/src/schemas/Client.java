@@ -5,30 +5,20 @@ import static menu.Utils.waitForUserInput;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import schemas.Transaction.Operation;
 import auth.AuthUtils;
 import auth.Auth.Role;
 import menu.Utils;
 
 public class Client extends User {
-	
-	private final Role role = Role.CLIENT;
 	private Double balance = 0.0;
 
-	private static enum Operation {
-		DEPOSIT,
-		WITHDRAW
-	}
-
 	// Constructor
-	public Client(String id, String name, String username, String password, String phoneNumber) {
-		super(id, name, username, password, phoneNumber);
+	public Client(String id, String name, String username, String password, String phoneNumber, Role role) {
+		super(id, name, username, password, phoneNumber, role);
 	}
 
 	// Getters
-	public Role getRole() {
-		return this.role;
-	}
-
 	public Double getBalance() {
 		return this.balance;
 	}
@@ -48,46 +38,22 @@ public class Client extends User {
 		}
 	}
 
-	@Override
-	public void setName(String name, Scanner scanner, ArrayList<User> users) {
-		String newName = AuthUtils.inputName(scanner);
-		this.name = newName;
-	}
-
-	@Override
-	public void setUsername(String username, Scanner scanner, ArrayList<User> users) {
-		String newUsername = AuthUtils.inputUsername(scanner, users);
-		this.username = newUsername;
-	}
-
-	@Override
-	public void setPassword(String password, Scanner scanner, ArrayList<User> users) {
-		String newPassword = AuthUtils.inputPassword(scanner);
-		this.password = newPassword;
-	}
-
-	@Override
-	public void setPhoneNumber(String phoneNumber, Scanner scanner, ArrayList<User> users) {
-		String newPhoneNumber = AuthUtils.inputPhoneNumber(scanner);
-		this.phoneNumber = newPhoneNumber;
-	}
-
 	// Methods
 	@Override
-	public void menu(Scanner scanner, ArrayList<User> users, User loggedUser) {
+	public void menu(Scanner scanner, ArrayList<User> users, User loggedUser, ArrayList<Transaction> transactions) {
 		Client client = (Client) loggedUser;
 		Boolean alive = true;
 
 		do {
 			Utils.clearScreen();
 			System.out.print("=== [CLIENT MENU] =====================\n"
-			+ "1. [Account data]\n"
-			+ "2. [Modify account data]\n"
-			+ "3. [Transfer money]\n"
-			+ "4. [Deposit money]\n"
-			+ "5. [Withdraw money]\n"
-			+ "6. [Exit]\n"
-			+ "\nOption: "
+				+ "1. [Account data]\n"
+				+ "2. [Modify account data]\n"
+				+ "3. [Transfer money]\n"
+				+ "4. [Deposit money]\n"
+				+ "5. [Withdraw money]\n"
+				+ "6. [Exit]\n"
+				+ "\nOption: "
 			);
 			Integer option = scanner.nextInt();
 			scanner.nextLine();
@@ -95,7 +61,7 @@ public class Client extends User {
 			switch(option) {
 				case 1:
 					Utils.clearScreen();
-					showAccountData(users, client);
+					showAccountData(client);
 					waitForUserInput(scanner);
 					break;
 				case 2:
@@ -104,17 +70,17 @@ public class Client extends User {
 					break;
 				case 3:
 					Utils.clearScreen();
-					transfer(users, client, scanner);
+					transfer(users, client, scanner, transactions);
 					waitForUserInput(scanner);
 					break;
 				case 4:
 					Utils.clearScreen();
-					deposit(users, client, scanner);
+					deposit(client, scanner, transactions);
 					waitForUserInput(scanner);
 					break;
 				case 5:
 					Utils.clearScreen();
-					withdraw(users, client, scanner);
+					withdraw(client, scanner, transactions);
 					waitForUserInput(scanner);
 					break;
 				case 6:
@@ -126,7 +92,7 @@ public class Client extends User {
 	}
 
 	// Client methods
-	public static void showAccountData(ArrayList<User> users, Client currentClient) {
+	public static void showAccountData(Client currentClient) {
 		String formatedBalance = String.format("[$%.2f | BsS.%.2f]", currentClient.getBalance(), currentClient.getBalance() * Utils.exchangeRate);
 
 		System.out.println("=== [ACCOUNT DATA] =====================\n"
@@ -138,48 +104,7 @@ public class Client extends User {
 		);
 	}
 
-	public static void modifyAccountData(ArrayList<User> users, Client currentClient, Scanner scanner) {
-		Boolean alive = true;
-
-		do {
-			Utils.clearScreen();
-			System.out.print("=== [ACCOUNT DATA EDIT] ================\n"
-				+ "1. [Name]\n"
-				+ "2. [Username]\n"
-				+ "3. [Password]\n"
-				+ "4. [Phone number]\n"
-				+ "5. [Exit]\n"
-				+ "\nOption: "
-			);
-			Integer option = scanner.nextInt();
-			scanner.nextLine();
-
-			switch(option) {
-				case 1:
-					currentClient.setName(currentClient.getName(), scanner, users);
-					break;
-				case 2:
-					currentClient.setUsername(currentClient.getUsername(), scanner, users);
-					break;
-				case 3:
-					currentClient.setPassword(currentClient.getPassword(), scanner, users);
-					break;
-				case 4:
-					currentClient.setPhoneNumber(currentClient.getPhoneNumber(), scanner, users);
-					break;
-				case 5:
-					alive = false;
-					break;
-				default:
-					System.out.println("[Invalid option]");
-					break;
-			}
-		} while (alive);
-
-		System.out.println("\n[Account data updated]");
-	}
-
-	public static void transfer(ArrayList<User> users, Client currentClient, Scanner scanner) {
+	public static void transfer(ArrayList<User> users, Client currentClient, Scanner scanner, ArrayList<Transaction> transactions) {
 		System.out.println("=== [TRANSFER] =========================\n");
 		
 		if (users.size() < 2) {
@@ -258,10 +183,11 @@ public class Client extends User {
 
 		currentClient.setBalance(amount, Operation.WITHDRAW);
 		targetClient.setBalance(amount, Operation.DEPOSIT);
+		transactions.add(new Transaction(currentClient.getName(), currentClient.getId(), amount, Operation.TRANSFER, targetClient.getId()));
 		System.out.println("[Transfer completed]");
 	}
 
-	public static void deposit(ArrayList<User> users, Client currentClient, Scanner scanner) {
+	public static void deposit(Client currentClient, Scanner scanner, ArrayList<Transaction> transactions) {
 		System.out.println("=== [DEPOSIT] ==========================\n");
 
 		System.out.print("[Amount]: $");
@@ -273,10 +199,11 @@ public class Client extends User {
 		}
 
 		currentClient.setBalance(amount, Operation.DEPOSIT);
+		transactions.add(new Transaction(currentClient.getName(), currentClient.getId(), amount, Operation.DEPOSIT, null));
 		System.out.println("[Deposit completed]");
 	}
 
-	public static void withdraw(ArrayList<User> users, Client currentClient, Scanner scanner) {
+	public static void withdraw(Client currentClient, Scanner scanner, ArrayList<Transaction> transactions) {
 		System.out.println("=== [WITHDRAW] =========================\n");
 
 		if (currentClient.getBalance() == 0.0) {
@@ -297,6 +224,7 @@ public class Client extends User {
 		}
 
 		currentClient.setBalance(amount, Operation.WITHDRAW);
+		transactions.add(new Transaction(currentClient.getName(), currentClient.getId(), amount, Operation.WITHDRAW, null));
 		System.out.println("[Withdraw completed]");
 	}
 }

@@ -34,11 +34,11 @@ public class Auth {
 
         switch (role) {
             case OPERATOR:
-                Operator operator = new Operator(id, name, username, password, phoneNumber);
+                Operator operator = new Operator(id, name, username, password, phoneNumber, role);
                 users.add(operator);
                 break;
             case CLIENT:
-                Client client = new Client(id, name, username, password, phoneNumber);
+                Client client = new Client(id, name, username, password, phoneNumber, role);
                 users.add(client);
                 break;
             default:
@@ -49,7 +49,7 @@ public class Auth {
         System.out.println("\n[User created successfully]");
     }
 
-    public static void login(Scanner scanner, ArrayList<User> users) {
+    public static void login(Scanner scanner, ArrayList<User> users, ArrayList<Transaction> transactions) {
         Utils.clearScreen();
 		System.out.print("=== [LOGIN] ============================");
 
@@ -71,9 +71,9 @@ public class Auth {
 		}
 
         if (user instanceof Operator) {
-            user.menu(scanner, users, (Operator) user);
+            user.menu(scanner, users, (Operator) user, transactions);
         } else if (user instanceof Client) {
-            user.menu(scanner, users, (Client) user);
+            user.menu(scanner, users, (Client) user, transactions);
         } else {
             System.out.println("[Invalid user]");
         }

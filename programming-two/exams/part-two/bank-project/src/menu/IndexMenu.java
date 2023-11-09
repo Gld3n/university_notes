@@ -11,6 +11,7 @@ import schemas.*;
 public class IndexMenu {
 
 	static ArrayList<User> users = new ArrayList<User>();
+	static ArrayList<Transaction> transactions = new ArrayList<Transaction>();
 
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
@@ -33,7 +34,7 @@ public class IndexMenu {
 					waitForUserInput(scanner);
 					break;
 				case 2:
-					Auth.login(scanner, users);
+					Auth.login(scanner, users, transactions);
 					waitForUserInput(scanner);
 					break;
 				case 3:
